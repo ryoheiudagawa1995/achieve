@@ -1,0 +1,12 @@
+desc 'override git.rake taske update for repository'
+  task :update do
+    run_locally do
+    execute :git, :fetch, :origin
+    current_dir = capture "pwd"
+    if test " [ -f #{current_dir}/.git/refs/heads/#{fetch(:branch)} ] "
+      info "the branch #{fetch(:branch)} already exists at local"
+    else
+      execute :git, :branch, "#{fetch(:branch)}", "origin/#{fetch(:branch)}"
+    end
+  end
+end
